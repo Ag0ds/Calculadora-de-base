@@ -32,31 +32,33 @@ def calcula_base(numero, base, base_desejada):
     T = 0
    
     while Q >= 0:
-        parcial = soma_de_base(int(numero[T]),mutiplicacao_base(Resultado,base,base_desejada),base_desejada)
+        parcial = soma_de_base(int(numero[T]),multiplicacao_base(Resultado,base,base_desejada),base_desejada)
         Resultado = parcial
         T += 1
         Q -= 1
     return Resultado
     
-def mutiplicacao_base(valor_1, valor_2, base):
-    loop_1 = len(str(valor_1))
-    loop_2 = len(str(valor_2))
-    valor_1 = (str(valor_1)[::-1])
-    valor_2 = (str(valor_2)[::-1])
-    R = 0
-    T = 0
-    Resultado_mut = ""
-    while loop_1 > 0:
-        primeiro_resultado = int(valor_1[R]) * int(valor_2[T])
-        if primeiro_resultado > int(valor_2):
-            resto = primeiro_resultado % base
-            quociente = primeiro_resultado // base 
-            primeiro_resultado = str(resto) + str(quociente)
-        Resultado_mut = Resultado_mut + str(primeiro_resultado)
-        R += 1
-        loop_1 -= 1
-    Resultado_mut = int((Resultado_mut)[::-1])
-    return Resultado_mut
+def multiplicacao_base(valor_1, valor_2, base):
+    valor_1 = str(valor_1)[::-1]  
+    valor_2 = str(valor_2)[::-1]
+    
+    resultado_parcial = [0] * (len(valor_1) + len(valor_2)) 
+
+   
+    for i in range(len(valor_1)):
+        for j in range(len(valor_2)):
+            multiplicacao = int(valor_1[i]) * int(valor_2[j])
+            soma = multiplicacao + resultado_parcial[i + j]
+
+            resultado_parcial[i + j] = soma % base
+            resultado_parcial[i + j + 1] += soma // base
+
+    
+    while len(resultado_parcial) > 1 and resultado_parcial[-1] == 0:
+        resultado_parcial.pop()
+
+    resultado = ''.join(map(str, resultado_parcial[::-1])) 
+    return int(resultado)
 
 
 def soma_de_base(valor_1, valor_2, base):
