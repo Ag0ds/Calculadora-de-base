@@ -6,8 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de base</title>
     <style>
-        .container {
+        .container{
             display: flex;
+            justify-content: space-between;
+        }
+        .container_1 {
+            display: flex;
+            justify-content: space-between;
         }
 
         body {
@@ -16,9 +21,9 @@
 
         .text-estilizado {
             color: #2390FC;
-            font-size: 20px;
+            font-size: clamp(1px, 20px, 30px);
             font-family: 'Courier New', monospace;
-            font-weight: 100px;
+            font-weight: 100;
             text-align: center;
             letter-spacing: 5px;
             text-transform: uppercase;
@@ -28,26 +33,25 @@
 
         .sidebar {
             background-color: #50667D;
-            margin-left: 15%;
+            margin-left: 10%;
             margin-top: 5%;
             border: 5px solid #2A2F33;
-            width: 420px;
+            width: 32%;
             height: 400px;
             border-radius: 5%;
         }
 
         .sidebar_1 {
             background-color: #50667D;
-            margin-left: 10%;
+            margin-right: 10%;
             margin-top: 5%;
             border: 5px solid #2A2F33;
-            width: 420px;
+            width: 32%;
             height: 400px;
             border-radius: 5%;
         }
 
-        input[type="number"],
-        input[type="text"] {
+        .text{
             margin-left: 3%;
             margin-top: 5%;
             width: 90%;
@@ -94,12 +98,21 @@
 
         .resultado {
             background-color: #50667D;
-            margin-left: 15%;
+            margin-left: 10%;
             margin-top: 1%;
             border: 5px solid #2A2F33;
-            width: 420px;
+            width: 32%;
             height: 80px;
         }
+        .resultado_1 {
+            background-color: #50667D;
+            margin-right: 10%;
+            margin-top: 1%;
+            border: 5px solid #2A2F33;
+            width: 32%;
+            height: 80px;
+        }
+
 
         .title-resut {
             color: #FBE4D8;
@@ -111,6 +124,27 @@
             text-transform: uppercase;
             margin: 0 auto;
             max-width: 50%;
+        }
+        .unica{
+            margin-left: 3%;
+            margin-top: 5%;
+            width: 50%;
+            padding: 5px;
+            font-size: 30px;
+            background-color: #CEFFFB;
+            color: #4F7BA7;
+            border-radius: 8px;
+            outline: none;
+            font-family: 'Courier New', monospace;
+
+        }
+        .form-select{
+            width: 40%;
+            height: 30px;
+            border-radius: 8px;
+            background-color: #CEFFFB;
+
+
         }
     </style>
 </head>
@@ -128,29 +162,42 @@
         <div class="sidebar">
             <form method="post" action="{% url 'calcular' %}"> {% csrf_token %}
                 <h1 class="title-sidebar">Conversão de bases numéricas</h1>
-                <input type="text" name="numero" placeholder="Número" required>
-                <input type="text" name="base" placeholder="Base" required>
-                <input type="text" name="base_desejada" placeholder="Base Desejada" required>
+                <input type="hidden" name="form_type" value="converter">
+                <input class="text" type="text" name="numero" placeholder="Número" required>
+                <input class="text" type="number" name="base" placeholder="Base" required>
+                <input class="text" type="number" name="base_desejada" placeholder="Base Desejada" required>
                 <button type="submit" id="converter">Converter</button>
             </form>
         </div>
 
         <div class="sidebar_1">
-            <form method="post" action="{% url 'calcular' %}"> {% csrf_token %}
-                <h1 class="title-sidebar">Conversão de bases numéricas</h1>
-                <input type="text" name="numero" placeholder="Número" required>
-                <input type="text" name="base" placeholder="Base" required>
-                <input type="text" name="base_desejada" placeholder="Base Desejada" required>
-                <button type="submit" id="converter">Converter</button>
+            <form method="post" action="{% url 'operacoes' %}"> {% csrf_token %}
+                <h1 class="title-sidebar">Operações com bases Numéricas</h1>
+                <input type="hidden" name="form_type" value="operacoes">
+                <input class="text" type="text" name="valor_ope_1" placeholder="insira o valor" required>
+                <input class="text" type="text" name="valor_ope_2" placeholder="Insira o valor" required>
+                <input class="unica" name="base_opera" placeholder="base" type="number" required>
+                <select class="form-select" name="operacoes" aria-label="Default select example" required>
+                  <option selected>Escolha a operação</option>
+                  <option value="somar">Soma</option>
+                  <option value="subtrair">Subtração</option>
+                  <option value="multiplicar">Multiplicação</option>
+                    <option value="dividir">Divisão</option>
+                </select>
+                <button type="submit" id="operaçoes">Converter</button>
             </form>
         </div>
     </div>
 
-    {% if Resultado %}
-    <div class="resultado">
-        <h1 class="title-resut">Resultado: {{Resultado}}</h1>
+
+    <div class="container_1">
+        <div class="resultado">
+            <h1 class="title-resut">Resultado: {{Resultado}}</h1>
+        </div>
+        <div class="resultado_1">
+            <h1 class="title-resut">Resultado: {{Resultado_opera}}</h1>
+        </div>
     </div>
-    {% endif %}
 
 
 </html>
